@@ -1,0 +1,75 @@
+{% extends 'clanwar/base.html' %}
+{% load static %}
+{# Load the tag library #}
+{% load my_filters %}
+{% load to_datetime %}
+{% load to_range %}
+{% load to_range_loss %}
+{% load subtract %}
+{% load absolute %}
+{% load format_thousands %}
+
+{% block content %}
+<div class="home" style="height: 40vh; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url({% static "images/topplayers.jpg" %}); background-size: cover; background-position: center center;"></div>
+<div class="" style="width: 100%; background: #1b1c1d; color: rgba(255,255,255,.9); height: 30px; font-family: 'Ubuntu'; font-weight: 800;">
+  <form style="line-height: 30px;" class="" method='GET' action="{% url 'top_players' %}">
+    <select class="table-btn" name="country">
+      {% include "countries.html" %}
+    </select>
+    <input class="table-btn" type="submit" value="Submit">
+  </form>
+</div>
+
+
+<div class="page_content" style="margin-top: 30px;">
+<div class="container container-homepage">
+  <div class="panel panel-default" style="width: 100%;">
+    <div class="container panel-body" style="width: 100%;">
+      <h3>Top Players {{ country_name }}  <img src="/static/images/flags/{{ country_code }}.svg" style="max-width: 33px; box-shadow: 2px 2px 5px #888888;"/></h3>
+    </div>
+      <table class="table table-striped table-hover text-center table-condesed" style="width: 100%; padding:0; margin:0; border-top: 1px solid lightgrey;">
+        <thead class="text-center small">
+          <th class="text-center">Rank</th>
+          <th class="text-center"></th>
+          <th class="text-center">Name</th>
+          <th class="text-center">Lvl</th>
+          <th class="text-center" colspan="2">Delta</th>
+          <th class="text-center" style="padding: 8px 4px 8px 8px;">Trophies</th>
+        </thead>
+
+        <tbody class="small">
+          <div class="pre-scrollable" style="max-height: 500px">
+          {% for player in data %}
+          <tr>
+            <td style="vertical-align: middle;">{{ player|lookup:'rank' }}</td>
+            <td style="vertical-align: middle;"><img src="{{ player|lookup:'clan'|lookup:'badge'|lookup:'image' }}" alt="Image not fount" onerror="this.src='https://royaleapi.com/static/img/badge/no_clan.png';" style="max-height: 50px;"/></td>
+            <td style="vertical-align: middle;">
+              <form method='GET' action="{% url 'player_profile' %}">
+                <button type="submit" class="table-btn" type="button">{{ player|lookup:'name' }}</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player|lookup:'tag' }}>
+              </form>
+              {{ player|lookup:'clan'|lookup:'name' }}
+            </td>
+            <td style="vertical-align: middle;">{{ player|lookup:'expLevel' }}</td>
+            {% if player|subtract:'rank,previousRank' < 0 %}
+            <td style="vertical-align: middle;"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true" style="color: green;"></span></td>
+            <td style="vertical-align: middle;">{{ player|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
+            {% elif player|subtract:'rank,previousRank' > 0 %}
+            <td style="vertical-align: middle;"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" style="color: red;"></span></td>
+            <td style="vertical-align: middle;">{{ player|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
+            {% else %}
+            <td style="vertical-align: middle;"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
+            <td style="vertical-align: middle;"></span> {{ player|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
+            {% endif %}
+            <td style="vertical-align: middle;">{{ player|lookup:'trophies'|format_thousands }}</td>
+          </tr>
+          {% endfor %}
+          </div>
+        </tbody>
+
+      </table>
+      <h2>{{ card_obj }}</h2>
+  </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% load i18n staticfiles thumbnail cms_tags apphooks_config_tags %}
+
+
+<article class="article
+    {% if article.is_featured %} featured{% endif %}
+    {% if not article.published %} unpublished{% endif %} article-list">
+    {% if article.lead_in %}
+      {% if not detail_view %}
+    <div class="card card_largest_with_image grid-item" style="width: 100%;">
+      <img class="card-img-top card-img-top-list" src="{% thumbnail article.featured_image 1200x400 crop subject_location=article.featured_image.subject_location %}" alt="">
+      <div class="card-body card-body-list" style="height: 163px;">
+        <div class="card-title"><a href="{% namespace_url 'article-detail' article.slug namespace=namespace default='' %}">{% render_model article "title" %}</a></div>
+
+        <p class="card-text" style="font-family: 'Ubuntu', sans-serif; font-size: 14px; font-weight: 500; color: #FFFFFF; margin-top: 19px;">{% render_model article "lead_in" "" "" "truncatewords:'20'" %}</p>
+
+        <small class="post_meta"><a href="{% namespace_url 'article-detail' article.slug namespace=namespace default='' %}">{% include "aldryn_newsblog/includes/author.html" with author=article.author %}</a><span>{{ article.publishing_date|date }}</span></small>
+      </div>
+    </div>
+      {% endif %}
+    {% endif %}
+    {% if detail_view %}
+    <div class="card card_largest_with_image grid-item" style="width: 100%;">
+      <img class="card-img-top card-img-top-list" src="{% thumbnail article.featured_image 1200x400 crop subject_location=article.featured_image.subject_location %}" alt="">
+      <div class="card-body card-body-list">
+        <div class="card-title"><a href="{% namespace_url 'article-detail' article.slug namespace=namespace default='' %}">{% render_model article "title" %}</a></div>
+
+        <p class="card-text">{% render_placeholder article.content language placeholder_language %}</p>
+
+        <small class="post_meta"><a href="{% namespace_url 'article-detail' article.slug namespace=namespace default='' %}">{% include "aldryn_newsblog/includes/author.html" with author=article.author %}</a><span>{{ article.publishing_date|date }}</span></small>
+      </div>
+    </div>
+
+
+    {% endif %}
+</article>

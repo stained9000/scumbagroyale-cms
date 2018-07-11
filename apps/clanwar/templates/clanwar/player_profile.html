@@ -1,0 +1,225 @@
+{% extends 'clanwar/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="home" style="height: 20vh; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(/static/images/clanwar.jpg); background-size: cover; background-position: center center;"></div>
+
+<div class="participations container-homepage" id='participations'>
+  {% for player in player_info %}
+  <form method='GET' action="{% url 'war_participation' %}" style="margin: 30px 0px 30px 0px;">
+    <div class="search-bar col-lg-6" style="padding: 0;">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-default" type="button">Back</button>
+        </span>
+        <input name='clan_tag' type="hidden" class="form-control" value={{ player.clan_tag }}>
+      </div>
+    </div>
+  </form>
+  {% endfor %}
+
+    <div class="panel panel-default" style="margin-top: 20px;">
+      <div class="panel-body container" style=" padding: 0; width: 100%; margin-bottom: 0px; border-bottom: 1px solid #d4d4d5;">
+        <div class="container flex-container player-info-container">
+          <div class="player-info">
+            <h1 style="font-weight: bold;">{{ player.name }}</h1>
+            <p>#{{ player.tag }}</p>
+            <p>{{ player.trophies|format_thousands }} / {{ player.stats.maxTrophies|format_thousands }} MT <img src="/static/images/trophies.png" alt=""> | {{ player.arena.title }} | {{ player.arena.subtitle }}</p>
+            <p style="margin-top: 20px;"><img src="{{ player.clan.badge.image }}" alt="Clan badge" style="max-height: 40px;"> | {{ player.clan.name }} | {{ player.clan.tag }} | {{ player.role }}</p>
+          </div>
+          <div class="arena-icon">
+            <img src={{ player.arena.icon }} alt="">
+          </div>
+
+
+
+        </div>
+        <div class="player-menu nobr" style="height: 40px; background: #fff; border-bottom: 1px solid #d4d4d5; white-space: nowrap;">
+          <table>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-home"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button">Battles</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button">Decks</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button">Cards</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-chart-pie"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+          </table>
+
+        </div>
+        <div class="container flex-container">
+          <div class='deck-info' style="width: 100%;">
+            <h2 style="margin-bottom:20px; font-weight:bold;">Current Deck</h2>
+            <div class="deck-icons">
+              {% for card in player.currentDeck.cards_set.all %}
+              <img src={{ card.icon }}>
+              {% endfor %}
+            </div>
+          </div>
+          <div class='league-stats' style="margin-bottom: 20px;">
+            <h2 style="margin-bottom:20px; font-weight:bold;">League Stats</h2>
+            <h3 style="font-weight:bold;">Current Season</h3>
+            <table style="width: 100%">
+              <tbody>
+                <tr>
+                  <td style="max-width: 29px;"><img src={{ player.arena.icon }} alt="" style="max-height: 28px;"></td>
+                  <td>{{ player.arena.title }}</br>{{ player.arena.subtitle }}</td>
+                </tr>
+                <tr>
+                  <td>Rank</td>
+                  <td>{{ player.currentseason.rank }}</td>
+                </tr>
+                <tr>
+                  <td>Trophies</td>
+                  <td>{{ player.currentseason.trophies|format_thousands }}</td>
+                </tr>
+                <tr>
+                  <td>Best trophies</td>
+                  <td>{{ player.currentseason.bestTrophies|format_thousands }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <h3 style="font-weight:bold;">Previous Season</h3>
+            <table style="width: 100%">
+              <tbody>
+                <tr>
+                  <td style="max-width: 29px;"><img src={{ previousSeason.arena.icon }} alt="" style="max-height: 28px;"></td>
+                  <td>{{ previousSeason.arena.title }}</br>{{ previousSeason.arena.subtitle }}</td>
+                </tr>
+                <tr>
+                  <td>Rank</td>
+                  <td>{{ previousSeason.rank|format_thousands }}</td>
+                </tr>
+                <tr>
+                  <td>Trophies</td>
+                  <td>{{ previousSeason.trophies|format_thousands }}</td>
+                </tr>
+                <tr>
+                  <td>Best trophies</td>
+                  <td>{{ previousSeason.bestTrophies|format_thousands }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class='battle-stats' style="background: green; margin-bottom: 20px;">
+            <h2 style="margin-bottom:20px; font-weight:bold;">Battle Stats</h2>
+            <h3 style="font-weight:bold;">Clan War</h3>
+            <table style="width: 100%">
+              <tr>
+                <td>Clan Cards Collected</td>
+                <td>{{ player.stats.clanCardsCollected|format_thousands }}</td>
+              </tr>
+              <tr>
+                <td>War Day Wins</td>
+                <td>{{ player.games.warDayWins }}</td>
+              </tr>
+            </table>
+            <table style="width: 100%">
+              <thead>
+                <th>Ladder+Challenges</th>
+                <th>Count</th>
+                <th>Percentage</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Wins</td>
+                  <td>{{ player.games.wins|format_thousands }}</td>
+                  <td>{{ player.games.winsPercent|format_percent }}%</td>
+                </tr>
+                <tr>
+                  <td>Losses</td>
+                  <td>{{ player.games.losses|format_thousands }}</td>
+                  <td>{{ player.games.lossesPercent|format_percent }}%</td>
+                </tr>
+                <tr>
+                  <td>Draws</td>
+                  <td>{{ player.games.draws|format_thousands }}</td>
+                  <td>{{ player.games.drawsPercent|format_percent }}%</td>
+                </tr>
+              </tbody>
+            </table>
+            <table style="width: 100%">
+              <tbody>
+                <tr>
+                  <td>Total games</td>
+                  <td>{{ player.games.total|format_thousands }}</td>
+                </tr>
+                <tr>
+                  <td>Three Crown Wins</td>
+                  <td>{{ player.stats.threeCrownWins|format_thousands }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class='challenge-stats' style="background: orange;">
+            <h2 style="margin-bottom:20px; font-weight:bold;">Challenge Stats</h2>
+            <h3>Challenges</h3>
+            <table style="width: 100%;">
+              <tr>
+                <td>Max Wins</td>
+                <td> {{ player.stats.challengeMaxWins }}</td>
+              </tr>
+              <tr>
+                <td>Cards won</td>
+                <td>{{ player.stats.challengeCardsWon|format_thousands }}</td>
+              </tr>
+            </table>
+            <h3>Tournaments</h3>
+            <table style="width: 100%;">
+              <tr>
+                <td>Total Games</td>
+                <td>{{ player.games.tournamentGames|format_thousands }}</td>
+              </tr>
+              <tr>
+                <td>Cards Won</td>
+                <td>{{ player.stats.tournamentCardsWon}}</td>
+              </tr>
+            </table>
+          </div>
+          <div class='misc-stats' style="background: yellow;">
+            <h2 style="margin-bottom:20px; font-weight:bold;">Misc Stats</h2>
+            <table style="width: 100%;">
+              <tr>
+                <td>Experience</td>
+                <td>Level {{ player.stats.level }}</td>
+              </tr>
+              <tr>
+                <td>Cards Found</td>
+                <td>{{ player.stats.cardsFound}}/86</td>
+              </tr>
+              <tr>
+                <td>Total Donations</td>
+                <td>{{ player.stats.totalDonations|format_thousands }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="container-homepage">
+</div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% load i18n cms_tags %}
+
+{% if article %}
+
+        {% for article in article_list %}
+        <div class="col-lg-3 col-md-6 similar_post_col">
+          <div class="similar_post trans_200">
+            <a href="{{ article.get_absolute_url }}">{% render_model article "title" %}</a>
+          </div>
+        </div>
+        {% empty %}
+
+        {% endfor %}
+
+{% endif %}

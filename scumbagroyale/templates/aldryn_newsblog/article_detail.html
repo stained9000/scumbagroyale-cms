@@ -1,0 +1,46 @@
+{% extends "aldryn_newsblog/base.html" %}
+{% load i18n cms_tags apphooks_config_tags thumbnail %}
+
+{% block content %}
+<div class="home" style="height: 65vh;">
+  <div class="home_background parallax-window" data-parallax="scroll" style="width: 100%; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url({% thumbnail article.featured_image 1200x400 crop subject_location=article.featured_image.subject_location %}); background-size: cover; background-position: center center;" data-speed="0.8"></div>
+  <div class="home_content">
+
+    <div class="post_category trans_200"><a href="category.html" class="trans_200">{% for tag in article.tags.names %}{{ tag }}{% endfor %}</a></div>
+
+    <div class="post_title">{% block title %}{{ article.title }}{% endblock %}</div>
+    <div class="post_author d-flex flex-row align-items-center justify-content-center">
+      {% if article.author.visual %}
+      {% thumbnail article.author.visual "50x50" crop upscale subject_location=article.author.visual.subject_location as author_image %}
+      <div class="author_image"><div><img src="{{ author_image.url }}" alt=""></div></div>
+      {% endif %}
+      <div class="post_meta"><a href="#">{{ article.author.name }}</a><span>{{ article.publishing_date|date:"F d, Y" }}</span></div>
+    </div>
+  </div>
+</div>
+  <div class="page_content">
+    <div class="container-homepage" style="justify-content: center;">
+
+
+{% block newsblog_content %}
+
+    {% include "aldryn_newsblog/includes/article_decorated.html" with detail_view="true" %}
+
+    {% static_placeholder "newsblog_social" %}
+
+<div class="container">
+    <ul class="pager">
+        {% if prev_article %}
+            <li><a href="{{ prev_article.get_absolute_url }}">{% trans "Previous Article" %}</a></li>
+        {% endif %}
+        <li><a href="{% namespace_url "article-list" %}">{% trans "Back to Overview" %}</a></li>
+        {% if next_article %}
+            <li><a href="{{ next_article.get_absolute_url }}">{% trans "Next Article" %}</a></li>
+        {% endif %}
+    </ul>
+  </div>
+
+{% endblock %}
+</div>
+</div>
+{% endblock content %}

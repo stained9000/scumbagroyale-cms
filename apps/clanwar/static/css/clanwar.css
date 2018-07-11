@@ -1,0 +1,189 @@
+@font-face {
+   font-family: ClashFont;
+   src: url(../fonts/Clash-Regular.otf);
+}
+
+@font-face {
+   font-family: ClashFont;
+   src: url(../fonts/Clash-Bold.otf);
+   font-weight: bold;
+}
+
+body {
+}
+
+.content {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+.page-header {
+    background-color: #ff9400;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #ffffff;
+    font-size: 36pt;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+
+
+div#navbar {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.navbar-header a p  {
+  text-align: left;
+  color: #0d47a1
+  font-size: 15px;
+  font-family: 'Luckiest Guy'
+}
+
+td {
+  vertical-align: middle;
+}
+
+
+h3 {
+  text-align: center;
+  color: #0d47a1
+  font-family: 'Luckiest Guy'
+}
+
+#warning {
+  padding-left: 20px;
+}
+
+.table-btn {
+    border: none;
+    background-color: inherit;
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    cursor: pointer;
+    display: inline-block;
+
+}
+
+form {
+  padding: 0;
+  margin: 0;
+
+}
+
+.container-homepage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.box {
+  text-align: center;
+}
+
+
+.footer-div {
+  width: 33.33%;
+  color: #FFFFFF;
+  font-family: ClashFont;
+}
+
+.form-control {
+  font-size: 1.5rem;
+}
+
+.label {
+  font-size: 100%;
+}
+
+.home {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-blend-mode: darken;
+  color: #FFFFFF;
+  object-position: center center;
+}
+option {
+  color: black;
+}
+.flex-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 15px;
+}
+.player-menu {
+  height: 40px;
+  border-top: 1px solid lightgrey;
+  border-bottom:  1px solid lightgrey;
+  margin: 15px 0px 15px 0px;
+}
+.player-info h1, .player-info h2, .player-info h3, .player-info p {
+  font-family: "Work Sans", sans-serif;
+  text-align: left;
+  margin-bottom: 0;
+}
+.player-info p img {
+  max-height: 19px;
+}
+
+.arena-icon img {
+  float: right;
+  max-height: 100%;
+  max-width: 100%;
+}
+.deck-info {
+  margin-bottom: 20px;
+}
+.deck-info h1, .deck-info h2, .deck-info h3, .deck-info p {
+  font-family: "Work Sans", sans-serif;
+  text-align: left;
+  margin-bottom: 0;
+}
+.deck-icons img {
+  float: left;
+  margin-right: 3px;
+}
+.nobr {
+  white-space: nowrap
+}
+.player-menu table td {
+  height: 100%;
+  padding: 10px;
+  border-left: 1px solid lightgrey;
+}
+.league-stats {
+
+}
+.league-stats h1, .league-stats h2, .league-stats h3, .league-stats p {
+  font-family: "Work Sans", sans-serif;
+  text-align: left;
+  margin-bottom: 0;
+}
+.battle-stats {
+  margin-bottom: 20px;
+}
+.battle-stats h1, .battle-stats h2, .battle-stats h3, .battle-stats p {
+  font-family: "Work Sans", sans-serif;
+  text-align: left;
+  margin-bottom: 0;
+}
+.challenge-stats {
+  
+}
+.challenge-stats h1, .challenge-stats h2, .challenge-stats h3, .challenge-stats p {
+  font-family: "Work Sans", sans-serif;
+  text-align: left;
+  margin-bottom: 0;
+}

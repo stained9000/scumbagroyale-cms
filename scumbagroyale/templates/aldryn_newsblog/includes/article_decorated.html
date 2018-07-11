@@ -1,0 +1,20 @@
+{% load i18n staticfiles thumbnail cms_tags apphooks_config_tags %}
+
+
+<article class="article
+    {% if article.is_featured %} featured{% endif %}
+    {% if not article.published %} unpublished{% endif %}">
+
+    <div class="card card_largest_with_image grid-item" style="width: 100%;">
+      <div class="card-body">
+
+        <p class="card-text">
+          {% if detail_view %}
+              {% render_placeholder article.content language placeholder_language %}
+          {% endif %}
+        </p>
+
+      </div>
+    </div>
+
+</article>

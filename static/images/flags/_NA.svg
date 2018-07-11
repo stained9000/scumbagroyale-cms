@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="1400"
+   height="700"
+   viewBox="0 0 18525 9750"
+   xml:space="preserve"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.45pre1"
+   sodipodi:docname="Flag_of_the_United_Statessss.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   sodipodi:docbase="C:\Documents and Settings\Flanker\Desktop"
+   sodipodi:modified="true"><sodipodi:namedview
+   inkscape:window-height="573"
+   inkscape:window-width="791"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0.0"
+   guidetolerance="10.0"
+   gridtolerance="10.0"
+   objecttolerance="10.0"
+   borderopacity="1.0"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   id="base"
+   inkscape:showpageshadow="false"
+   inkscape:zoom="0.37641474"
+   inkscape:cx="868.44401"
+   inkscape:cy="358.25686"
+   inkscape:window-x="187"
+   inkscape:window-y="106"
+   inkscape:current-layer="svg2" />
+  <metadata
+   id="metadata4">
+    <rdf:RDF>
+      <rdf:Description
+   about="http://commons.wikimedia.org/wiki/Image:Flag_of_the_United_States.svg"
+   dc:title="Flag of the United States"
+   dc:description="The flag of the United States:     * 50 stars     * In use since 4 July 1960     * Specifications: United States Executive Order 10834     * Designed by Robert Heft in 1958     * Proportions: 19x10     * Colors:         * Cable No. 70180 Old Glory Red, PMS 193C         * Cable No. 70001 White         * Cable No. 70075 Old Glory Blue, PMS 193C     * License: public domain"
+   dc:publisher="Wikimedia Commons"
+   dc:date="2006-04-26"
+   dc:format="image/svg+xml"
+   dc:language="en">
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>flag</rdf:li>
+            <rdf:li>united_states</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:creator>
+          <rdf:Bag>
+            <rdf:li>Daniel McRae</rdf:li>
+            <rdf:li>Dbenbenn</rdf:li>
+            <rdf:li>Zscout370</rdf:li>
+            <rdf:li>Pumbaa80</rdf:li>
+            <rdf:li>jacobolus</rdf:li>
+          </rdf:Bag>
+        </dc:creator>
+      </rdf:Description>
+    <cc:Work
+   rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+     rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF>
+  </metadata>
+  <defs
+   id="defs6">
+    <g
+   id="cone">
+      <polygon
+   id="triangle"
+   points="0,0 0,1 0.5,1 0,0 "
+   transform="matrix(0.9510565,0.309017,-0.309017,0.9510565,0,-1)" />
+      <use
+   xlink:href="#triangle"
+   transform="scale(-1,1)"
+   id="use10"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" />
+    </g>
+    <g
+   id="star"
+   transform="matrix(300.3,0,0,300.3,1235,1050)"
+   style="fill:#ffffff">   
+      <use
+   xlink:href="#cone"
+   id="use13"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   xlink:href="#cone"
+   transform="matrix(0.309017,0.9510565,-0.9510565,0.309017,0,0)"
+   id="use15"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   xlink:href="#cone"
+   transform="matrix(0.309017,-0.9510565,0.9510565,0.309017,0,0)"
+   id="use17"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   xlink:href="#cone"
+   transform="matrix(-0.809017,0.5877853,-0.5877853,-0.809017,0,0)"
+   id="use19"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   xlink:href="#cone"
+   transform="matrix(-0.809017,-0.5877853,0.5877853,-0.809017,0,0)"
+   id="use21"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" />
+    </g>
+    <g
+   id="even_star_row">
+      <use
+   id="star 1 even row"
+   xlink:href="#star"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   id="star 2 even row"
+   xlink:href="#star"
+   x="1235"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   id="star 3 even row"
+   xlink:href="#star"
+   x="2470"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   id="star 4 even row"
+   xlink:href="#star"
+   x="3705"
+   y="0"
+   width="18525"
+   height="9750" />
+      <use
+   id="star 5 even row"
+   xlink:href="#star"
+   x="4940"
+   y="0"
+   width="18525"
+   height="9750" />
+    </g>
+    <g
+   id="odd_star_row">
+      <use
+   id="last 5 stars odd row"
+   xlink:href="#even_star_row"
+   x="617.5"
+   y="-525"
+   width="18525"
+   height="9750" />
+      <use
+   id="star 1 odd row"
+   xlink:href="#star"
+   x="-617.5"
+   y="-525"
+   width="18525"
+   height="9750" />
+    </g>
+  
+    
+    
+    
+     
+  </defs>
+  
+<g
+   id="g2262"
+   transform="translate(-487.5,0)"><rect
+     width="19500"
+     height="9750"
+     id="red background"
+     x="0"
+     y="-3.5527137e-013"
+     style="fill:#bf0a30" /><g
+     transform="scale(1.0526316,1)"
+     id="white stripes"
+     style="fill:#ffffff">
+      <rect
+   id="stripe 2"
+   width="18525"
+   height="750"
+   y="750"
+   x="0" />
+      <rect
+   id="stripe 4"
+   width="18525"
+   height="750"
+   y="2250"
+   x="0" />
+      <rect
+   id="stripe 6"
+   width="18525"
+   height="750"
+   y="3750"
+   x="0" />
+      <rect
+   id="stripe 8"
+   width="18525"
+   height="750"
+   y="5250"
+   x="0" />
+      <rect
+   id="stripe 10"
+   width="18525"
+   height="750"
+   y="6750"
+   x="0" />
+      <rect
+   id="stripe 12"
+   width="18525"
+   height="750"
+   y="8250"
+   x="0" />
+    </g><rect
+     id="blue field"
+     width="7410"
+     height="5250"
+     x="0"
+     y="-1.7763568e-013"
+     style="fill:#002868" /><g
+     id="white stars"> 
+      <g
+   id="star_rows_1-2"> 
+        <use
+   id="star_row_1"
+   xlink:href="#odd_star_row"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" /> 
+        <use
+   id="star_row_2"
+   xlink:href="#even_star_row"
+   x="0"
+   y="0"
+   width="18525"
+   height="9750" /> 
+      </g> 
+      <use
+   id="star rows 3-4"
+   xlink:href="#star_rows_1-2"
+   y="1050"
+   x="0"
+   width="18525"
+   height="9750" /> 
+      <use
+   id="star rows 5-6"
+   xlink:href="#star_rows_1-2"
+   y="2100"
+   x="0"
+   width="18525"
+   height="9750" /> 
+      <use
+   id="star rows 7-8"
+   xlink:href="#star_rows_1-2"
+   y="3150"
+   x="0"
+   width="18525"
+   height="9750" /> 
+      <use
+   id="star row 9"
+   xlink:href="#odd_star_row"
+   y="4200"
+   x="0"
+   width="18525"
+   height="9750" /> 
+    </g><path
+     sodipodi:nodetypes="cccc"
+     id="path2203"
+     d="M 0,9750 L 19500,9750 L 19500,-3.5527136e-013 L 0,9750 z "
+     style="fill:#ff0000" /><path
+     id="rect2205"
+     d="M 14625,2437.4999 L 4874.9999,7312.4998 L 4874.9999,9749.9997 L 14625,9749.9997 L 14625,2437.4999 z "
+     style="fill:#ffffff" /><path
+     id="maple_leaf"
+     d="M 13252.6,3461.2499 L 12232.332,3685.4128 C 12199.42,3690.616 12170.289,3686.7454 12145.279,3677.1427 L 7327.2989,6086.3503 L 7850.0556,6530.3235 C 7919.5725,6586.7211 7954.8934,6688.2735 7930.1448,6780.1672 L 7776.06,7307.7118 C 8380.7919,7234.8306 8923.295,7169.3967 9528.0131,7096.6069 C 9581.7459,7095.9062 9670.7124,7143.7551 9670.3457,7208.4708 L 9590.2564,9140.6247 L 9884.0622,9140.6247 L 9837.9238,7212.3882 C 9837.5562,7147.6725 9918.2536,7095.9062 9971.9863,7096.6069 C 10576.705,7169.3968 11119.207,7234.8306 11723.939,7307.7118 L 11569.855,6780.1672 C 11545.107,6688.2736 11580.427,6586.7212 11649.944,6530.3235 L 13406.25,5038.6606 L 13042.801,4860.2007 C 12882.77,4800.421 12927.107,4706.4338 12984.475,4479.7766 L 13252.6,3461.2499 z "
+     style="fill:#ff0000" /></g></svg>

@@ -1,0 +1,213 @@
+{% load staticfiles %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+{% load apps/clanwar/tmeplatetags/my_filters %}
+{% load apps/clanwar/tmeplatetags/to_datetime %}
+{% load apps/clanwar/tmeplatetags/to_range %}
+{% load apps/clanwar/tmeplatetags/to_range_loss %}
+{% load apps/clanwar/tmeplatetags/subtract %}
+{% load apps/clanwar/tmeplatetags/absolute %}
+{% load apps/clanwar/tmeplatetags/format_thousands %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style>
+
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 0.5em;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .participation table{
+          width: 50%;
+          counter-reset: row-num;
+        }
+        .participation tbody tr {
+          counter-increment: row-num;
+        }
+        .participation tbody tr td:first-child::after {
+            content: counter(row-num) ". ";
+            font-weight: bold;
+        }
+
+        @media screen and (min-width: 993px) {
+          .participations {
+            width: 961px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .container-homepage {
+            width: 961px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .war-season {
+            height: 150px;
+            text-align: right;
+            border-top: 0px;
+            border-left: 1px solid lightgrey;
+          }
+          .player-separator {
+            border-left: 1px solid lightgrey;
+          }
+          .current-logo {
+            height: 130px;
+            width: 109.34px;
+          }
+          .news {width: 100%; order: 1; }
+          .clan-wars { width: 100%; order: 2; }
+          .top-clans { width: 48.39126%; order: 3; }
+          .top-players { width: 48.39126%; order: 4; }
+          .popular-decks { width: 100%; order: 5; }
+          .tournaments { width: 100%; order: 6; }
+          .active, .carousel-second, .carousel-third, .carousel-img { height: 490px; vertical-align: middle;}
+          .clan-wars-query { width: 100%; height: 300px;}
+        }
+        .flex-container {
+          width: 100%;
+        }
+        .player-info {width: 25%; order:1;}
+        .arena-icon { width: 75%; order:2;}
+
+
+        @media screen and (min-width: 536px) and (max-width: 992px) {
+          .participations {
+            width: 527px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .container-homepage {
+            width: 527px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .war-season {
+            height: 50px;
+            text-align: center;
+            border-top: 1px solid lightgrey;
+            margin-bottom: 10px;
+          }
+          .player-separator {
+            border-left: 0px;
+          }
+          .current-logo {
+            height: 50px;
+            width: 42.05px;
+          }
+          .news {width: 100%; order: 1; }
+          .clan-wars { width: 100%; order: 2; }
+          .top-clans { width: 47.1537%; order: 3; }
+          .top-players { width: 47.1537%; order: 4; }
+          .popular-decks { width: 100%; order: 5; }
+          .tournaments { width: 100%; order: 6; }
+          .active, .carousel-second, .carousel-third, .carousel-img { height: 301px; vertical-align: middle;}
+          .clan-wars-query { width: 100%; height: 300px;}
+
+
+        }
+
+        @media screen and (max-width: 535px) {
+          .participations {
+            padding-left: 10px;
+            padding-right: 10px;
+          }
+          .table-img {
+            visibility: hidden;
+            height: 0;
+            width: 0;
+            margin: 0;
+            padding: 0;
+
+          }
+          .war-season {
+            height: 50px;
+            text-align: center;
+            border-top: 1px solid lightgrey;
+            margin-bottom: 10px;
+          }
+          .player-separator {
+            border-left: 0px;
+          }
+          .current-logo {
+            height: 50px;
+            width: 42.05px;
+          }
+          .news { width: 100%; order: 1; }
+          .clan-wars {width: 100%; order: 2; }
+          .top-clans { width: 100%; order: 3; }
+          .top-players { width: 100%; order: 4; }
+          .popular-decks { width: 100%; order: 5; }
+          .tournaments { width: 100%; order: 6; }
+          .active, .carousel-second, .carousel-third, .carousel-img { height: 235px; vertical-align: middle;}
+          .clan-wars-query { width: 100%; height: 300px;}
+          .footer-div { font-size: x-small; }
+
+        }
+      </style>
+      <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'css/clanwar.css' %}">
+    </head>
+    <body style="position: relative; min-height: 100%;">
+      <div style="padding: 15px;">
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header row">
+              <a class="navbar-brand" href="{% url 'homepage' %}">
+                <p class='logo'><img src="../static/images/logo.png" alt="Standings" width="22" height="22" align="left middle">     ScumbagRoyale</p>
+              </a>
+            </div>
+          </div>
+        </nav>
+      </div>
+        {% block content %}
+
+
+        {% endblock %}
+
+    <div class="footer" style="position: absolute; bottom: 0; height: 140px; width: 100%; background: #555;">
+      <div class="container-homepage" style=" padding: 15px;">
+        <div class="footer-div">
+          <p>News</p>
+          <p>Clan Wars</p>
+          <p>Top Clans</p>
+        </div>
+        <div class="footer-div">
+          <p>Top Players</p>
+          <p>Popular Decks</p>
+          <p>Tournaments</p>
+        </div>
+        <div class="footer-div">
+          <p><i class="fa fa-facebook-official" style="font-size:20px"></i> Facebook</p>
+          <p><i class="fa fa-instagram" style="font-size:20px"></i> Instagram</p>
+          <p><i class="fa fa-twitter" style="font-size:20px"></i> Twitter</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
