@@ -180,10 +180,11 @@ option {
   margin-bottom: 0;
 }
 .challenge-stats {
-  
+
 }
 .challenge-stats h1, .challenge-stats h2, .challenge-stats h3, .challenge-stats p {
   font-family: "Work Sans", sans-serif;
   text-align: left;
   margin-bottom: 0;
+  font-weight: bold;
 }

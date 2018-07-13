@@ -70,7 +70,7 @@
 
         </div>
         <div class="container flex-container">
-          <div class='deck-info' style="width: 100%;">
+          <div class='deck-info' style="width: 100%; border-bottom: 1px solid lightgrey; padding-bottom: 20px;">
             <h2 style="margin-bottom:20px; font-weight:bold;">Current Deck</h2>
             <div class="deck-icons">
               {% for card in player.currentDeck.cards_set.all %}
@@ -81,137 +81,138 @@
           <div class='league-stats' style="margin-bottom: 20px;">
             <h2 style="margin-bottom:20px; font-weight:bold;">League Stats</h2>
             <h3 style="font-weight:bold;">Current Season</h3>
-            <table style="width: 100%">
+            <table class="table table-condensed" style="width: 100%">
               <tbody>
                 <tr>
                   <td style="max-width: 29px;"><img src={{ player.arena.icon }} alt="" style="max-height: 28px;"></td>
-                  <td>{{ player.arena.title }}</br>{{ player.arena.subtitle }}</td>
+                  <td style="text-align: right;">{{ player.arena.title }}</br>{{ player.arena.subtitle }}</td>
                 </tr>
                 <tr>
                   <td>Rank</td>
-                  <td>{{ player.currentseason.rank }}</td>
+                  <td style="text-align: right;">{{ player.currentseason.rank }}</td>
                 </tr>
                 <tr>
                   <td>Trophies</td>
-                  <td>{{ player.currentseason.trophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.currentseason.trophies|format_thousands }}</td>
                 </tr>
                 <tr>
                   <td>Best trophies</td>
-                  <td>{{ player.currentseason.bestTrophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.currentseason.bestTrophies|format_thousands }}</td>
                 </tr>
               </tbody>
             </table>
             <h3 style="font-weight:bold;">Previous Season</h3>
-            <table style="width: 100%">
+            <table class="table table-condensed" style="width: 100%">
               <tbody>
                 <tr>
                   <td style="max-width: 29px;"><img src={{ previousSeason.arena.icon }} alt="" style="max-height: 28px;"></td>
-                  <td>{{ previousSeason.arena.title }}</br>{{ previousSeason.arena.subtitle }}</td>
+                  <td style="text-align: right;">{{ previousSeason.arena.title }}</br>{{ previousSeason.arena.subtitle }}</td>
                 </tr>
                 <tr>
                   <td>Rank</td>
-                  <td>{{ previousSeason.rank|format_thousands }}</td>
+                  <td style="text-align: right;">{{ previousSeason.rank|format_thousands }}</td>
                 </tr>
                 <tr>
                   <td>Trophies</td>
-                  <td>{{ previousSeason.trophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ previousSeason.trophies|format_thousands }}</td>
                 </tr>
                 <tr>
                   <td>Best trophies</td>
-                  <td>{{ previousSeason.bestTrophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ previousSeason.bestTrophies|format_thousands }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class='battle-stats' style="background: green; margin-bottom: 20px;">
+          <div class='battle-stats' style="margin-bottom: 20px;">
             <h2 style="margin-bottom:20px; font-weight:bold;">Battle Stats</h2>
             <h3 style="font-weight:bold;">Clan War</h3>
-            <table style="width: 100%">
+            <table class="table table-condensed" style="width: 100%">
               <tr>
                 <td>Clan Cards Collected</td>
-                <td>{{ player.stats.clanCardsCollected|format_thousands }}</td>
+                <td style="text-align: right;">{{ player.stats.clanCardsCollected|format_thousands }}</td>
               </tr>
               <tr>
                 <td>War Day Wins</td>
-                <td>{{ player.games.warDayWins }}</td>
+                <td style="text-align: right;">{{ player.games.warDayWins }}</td>
               </tr>
             </table>
-            <table style="width: 100%">
+            <table class="table table-condensed" style="width: 100%">
               <thead>
                 <th>Ladder+Challenges</th>
-                <th>Count</th>
-                <th>Percentage</th>
+                <th style="text-align: center;">Count</th>
+                <th style="text-align: right;">Percentage</th>
               </thead>
               <tbody>
                 <tr>
                   <td>Wins</td>
-                  <td>{{ player.games.wins|format_thousands }}</td>
-                  <td>{{ player.games.winsPercent|format_percent }}%</td>
+                  <td style="text-align: center;">{{ player.games.wins|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.games.winsPercent|format_percent }}%</td>
                 </tr>
                 <tr>
                   <td>Losses</td>
-                  <td>{{ player.games.losses|format_thousands }}</td>
-                  <td>{{ player.games.lossesPercent|format_percent }}%</td>
+                  <td style="text-align: center;">{{ player.games.losses|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.games.lossesPercent|format_percent }}%</td>
                 </tr>
                 <tr>
                   <td>Draws</td>
-                  <td>{{ player.games.draws|format_thousands }}</td>
-                  <td>{{ player.games.drawsPercent|format_percent }}%</td>
+                  <td style="text-align: center;">{{ player.games.draws|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.games.drawsPercent|format_percent }}%</td>
                 </tr>
               </tbody>
             </table>
-            <table style="width: 100%">
+            <table class="table table-condensed" style="width: 100%;">
               <tbody>
                 <tr>
                   <td>Total games</td>
-                  <td>{{ player.games.total|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.games.total|format_thousands }}</td>
                 </tr>
                 <tr>
                   <td>Three Crown Wins</td>
-                  <td>{{ player.stats.threeCrownWins|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.stats.threeCrownWins|format_thousands }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class='challenge-stats' style="background: orange;">
+          <div class='challenge-stats'>
             <h2 style="margin-bottom:20px; font-weight:bold;">Challenge Stats</h2>
             <h3>Challenges</h3>
-            <table style="width: 100%;">
+            <table class="table table-condensed" style="width: 100%;">
               <tr>
                 <td>Max Wins</td>
-                <td> {{ player.stats.challengeMaxWins }}</td>
+                <td style="text-align: right;"> {{ player.stats.challengeMaxWins }}</td>
               </tr>
               <tr>
                 <td>Cards won</td>
-                <td>{{ player.stats.challengeCardsWon|format_thousands }}</td>
+                <td style="text-align: right;">{{ player.stats.challengeCardsWon|format_thousands }}</td>
               </tr>
             </table>
             <h3>Tournaments</h3>
-            <table style="width: 100%;">
+            <table class="table table-condensed" style="width: 100%;">
               <tr>
                 <td>Total Games</td>
-                <td>{{ player.games.tournamentGames|format_thousands }}</td>
+                <td style="text-align: right;">{{ player.games.tournamentGames|format_thousands }}</td>
               </tr>
               <tr>
                 <td>Cards Won</td>
-                <td>{{ player.stats.tournamentCardsWon}}</td>
+                <td style="text-align: right;">{{ player.stats.tournamentCardsWon}}</td>
               </tr>
             </table>
           </div>
-          <div class='misc-stats' style="background: yellow;">
+          <div class='misc-stats'>
             <h2 style="margin-bottom:20px; font-weight:bold;">Misc Stats</h2>
-            <table style="width: 100%;">
+            </br>
+            <table class="table table-condensed" style="width: 100%;">
               <tr>
                 <td>Experience</td>
-                <td>Level {{ player.stats.level }}</td>
+                <td style="text-align: right;">Level {{ player.stats.level }}</td>
               </tr>
               <tr>
                 <td>Cards Found</td>
-                <td>{{ player.stats.cardsFound}}/86</td>
+                <td style="text-align: right;">{{ player.stats.cardsFound}}/86</td>
               </tr>
               <tr>
                 <td>Total Donations</td>
-                <td>{{ player.stats.totalDonations|format_thousands }}</td>
+                <td style="text-align: right;">{{ player.stats.totalDonations|format_thousands }}</td>
               </tr>
             </table>
           </div>

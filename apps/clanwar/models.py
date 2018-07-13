@@ -839,7 +839,7 @@ class CurrentSeason(models.Model):
 class PreviousSeasons(models.Model):
     season = models.CharField(max_length=30)
     player = models.ForeignKey(Players, on_delete=models.CASCADE)
-    rank = models.IntegerField(default=0)
+    rank = models.IntegerField(default=0, null=True)
     trophies = models.IntegerField(default=0)
     bestTrophies = models.IntegerField(default=0)
     arena = models.ForeignKey(Arenas, on_delete=models.CASCADE, null=True)
@@ -851,15 +851,27 @@ class PreviousSeasons(models.Model):
         return self.player.tag + ": " + self.season
 
     def update(self, player_tag, previous_season_data):
-        season, created = PreviousSeasons.objects.update_or_create(
-        season = previous_season_data['id'],
-        player = Players.objects.get(tag=player_tag),
-        defaults={
-        'rank' : previous_season_data['rank'],
-        'trophies' : previous_season_data['trophies'],
-        'bestTrophies' : previous_season_data['bestTrophies'],
-        'arena'  : Arenas.objects.get(trophy_limit__lte=previous_season_data['trophies'], max_trophy_limit__gt=previous_season_data['trophies']),
-        }
-        )
+        if 'rank' in previous_season_data.keys():
+            season, created = PreviousSeasons.objects.update_or_create(
+            season = previous_season_data['id'],
+            player = Players.objects.get(tag=player_tag),
+            defaults={
+            'rank' : previous_season_data['rank'],
+            'trophies' : previous_season_data['trophies'],
+            'bestTrophies' : previous_season_data['bestTrophies'],
+            'arena'  : Arenas.objects.get(trophy_limit__lte=previous_season_data['trophies'], max_trophy_limit__gt=previous_season_data['trophies']),
+            }
+            )
+        else:
+            season, created = PreviousSeasons.objects.update_or_create(
+            season = previous_season_data['id'],
+            player = Players.objects.get(tag=player_tag),
+            defaults={
+            'rank' : None,
+            'trophies' : previous_season_data['trophies'],
+            'bestTrophies' : previous_season_data['bestTrophies'],
+            'arena'  : Arenas.objects.get(trophy_limit__lte=previous_season_data['trophies'], max_trophy_limit__gt=previous_season_data['trophies']),
+            }
+            )
 
         return season
