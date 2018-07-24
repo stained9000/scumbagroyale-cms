@@ -11,6 +11,11 @@
 {% load absolute %}
 {% load format_thousands %}
 {% load format_percent %}
+{% load format_winlosedraw %}
+{% load format_capitalize %}
+{% load deck_average %}
+{% load games_percent %}
+{% load deck_statistics %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -128,10 +133,20 @@
               .arena-icon { width: 50%; order:2;}
               .deck-icons img {align-content: center; max-width: calc(100%/8 - 3px);}
 
+
               .league-stats { width: 50%; order: 1; padding-right: 20px; border-right: 1px solid lightgrey;}
               .battle-stats { width: 50%; order: 2; padding-left: 20px;}
               .challenge-stats { width: 50%; order: 3; padding-right: 20px; border-right: 1px solid lightgrey;}
               .misc-stats { width: 50%; order: 4; padding-left: 20px;}
+
+              .team {width: 50%; order: 1; border-right: 1px solid lightgrey;}
+              .opponent {width: 50%; order: 2;}
+
+              .deck-graphics {width: 50%; order: 1;}
+              .deck-analysis {width: 50%; order: 2;}
+
+              .cards {width: calc(100%/4); order: 1}
+              .cards img {max-width: 100%;}
             }
 
             @media screen and (min-width: 536px) and (max-width: 992px) {
@@ -170,6 +185,13 @@
               .player-info {width: 70%; order:1;}
               .arena-icon { width: 30%; order:2;}
               .deck-icons img {align-content: center; max-width: calc(100%/4 - 3px);}
+              .deck-icons-battles img {align-content: center; max-width: calc(100%/4 - 3px);}
+
+              .team {width: 50%; order: 1; border-right: 1px solid lightgrey;}
+              .opponent {width: 50%; order: 2;}
+
+              .deck-graphics {width: 50%; order: 1;}
+              .deck-analysis {width: 50%; order: 2;}
 
               .clan-wars-query { width: 100%; height: 300px;}
 
@@ -216,6 +238,14 @@
               .player-info {width: 80%; order:1;}
               .arena-icon { width: 20%; order:2;}
               .deck-icons img {align-content: center; max-width: calc(100%/4 - 3px);}
+              .deck-icons-battles img {align-content: center; max-width: calc(100%/4 - 3px);}
+
+              .team {width: 50%; order: 1; border-right: 1px solid lightgrey;}
+              .opponent {width: 50%; order: 2;}
+
+              .deck-graphics {width: 50%; order: 1;}
+              .deck-analysis {width: 50%; order: 2;}
+
             }
         </style>
         <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">

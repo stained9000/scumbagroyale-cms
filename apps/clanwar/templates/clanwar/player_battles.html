@@ -1,0 +1,160 @@
+{% extends 'clanwar/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="home" style="height: 20vh; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(/static/images/clanwar.jpg); background-size: cover; background-position: center center;"></div>
+
+<div class="participations container-homepage" id='participations'>
+  {% for player in player_info %}
+  <form method='GET' action="{% url 'war_participation' %}" style="margin: 30px 0px 30px 0px;">
+    <div class="search-bar col-lg-6" style="padding: 0;">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-default" type="button">Back</button>
+        </span>
+        <input name='clan_tag' type="hidden" class="form-control" value={{ player.clan_tag }}>
+      </div>
+    </div>
+  </form>
+  {% endfor %}
+
+    <div class="panel panel-default" style="margin-top: 20px; width: 100%;">
+      <div class="panel-body container" style=" padding: 0; width: 100%; margin-bottom: 0px; border-bottom: 1px solid #d4d4d5;">
+        <div class="container flex-container player-info-container">
+          <div class="player-info">
+            <h1 style="font-weight: bold;">{{ player.name }}</h1>
+            <p>#{{ player.tag }}</p>
+            <p>{{ player.trophies|format_thousands }} / {{ player.stats.maxTrophies|format_thousands }} MT <img src="/static/images/trophies.png" alt=""> | {{ player.arena.title }} | {{ player.arena.subtitle }}</p>
+            <p style="margin-top: 20px;"><img src="{{ player.clan.badge.image }}" alt="Clan badge" style="max-height: 40px;"> | {{ player.clan.name }} | #{{ player.clan.tag }} | {{ player.role }}</p>
+          </div>
+          <div class="arena-icon">
+            <img src={{ player.arena.icon }} alt="">
+          </div>
+
+
+
+        </div>
+        <div class="player-menu nobr" style="height: 40px; background: #fff; border-bottom: 1px solid #d4d4d5; white-space: nowrap; margin-bottom: 0px;">
+          <table>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_profile' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-home"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr active">
+              <form method='GET' action="{% url 'player_battles' %}">
+                <button type="submit" class="table-btn" type="button" style="font-weight: bold;">Battles</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_decks' %}">
+                <button type="submit" class="table-btn" type="button">Decks</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button">Cards</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-chart-pie"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+          </table>
+
+        </div>
+        <div class="container flex-container" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
+
+          {% for battle in battles %}
+          <div class="battle" style="border-top: 1px solid lightgrey; padding-left: 15px; padding-right: 15px; position:relative">
+            <div class="win-label" style="width: 75px; height: 25px; background: {{ battle.winner|format_winlosedraw|lookup:'color1' }}; position: absolute; left: -10px; top: 25px; border-radius: 0px 5px 5px 0px;">
+              <h3 style="text-align: right; color: white; padding-right: 10px; line-height: 25px;">{{ battle.winner|format_winlosedraw|lookup:'result' }}</h3>
+              <div class="triangle" style=" width: 0; height: 0; border-top: 10px solid {{ battle.winner|format_winlosedraw|lookup:'color2' }}; border-left: 10px solid transparent; position: absolute; top: 25px; left: 0;">
+
+              </div>
+            </div>
+
+            <div class="battle-info" style="margin-bottom: 10px;">
+              {% if battle.mode_name == 'Challenge' %}
+                <h3 style="text-align: center; margin-top: 20px;">{{battle.challengeType|format_capitalize}} {{ battle.mode_name|format_capitalize }}</h3>
+              {% else %}
+                <h3 style="text-align: center; margin-top: 20px; ">{{ battle.mode_name|format_capitalize }}</h3>
+              {% endif %}
+              <p style="text-align: center; font-family: 'Work Sans', sans-serif; font-weight: bold;">
+                <img src="/static/images/crown-blue.png" alt="" style="max-height: 22px;"> {{battle.teamCrowns}} - {{battle.opponentCrowns}} <img src="/static/images/crown-red.png" alt="" style="max-height: 22px;">
+              </p>
+            </div>
+
+            <div class="panel panel-default" style="border-color: {{ battle.winner|format_winlosedraw|lookup:'color1'}};">
+
+              <div class="panel-body container flex-container" style="padding: 0px;">
+                <div class="team" style="padding: 15px;">
+                  {% for player in battle.teams_set.all %}
+                  <div class="team-player" style="margin-bottom: 5px;">
+                    <div class="team-player-info" style="text-align: left;">
+                      <form method='GET' action="{% url 'player_profile' %}">
+                        <button type="submit" class="table-btn" type="button"><h3 style="text-align: left;">{{ player.player_name }}</h3></button>
+                        <input name='player_tag' type="hidden" class="form-control" value={{ player.player_tag }}>
+                      </form>
+                      <h4 style="color: grey; margin-bottom: 10px;">{{ player.clan_name }}</h4>
+                      <h4 style="margin-bottom: 20px;"><span style="font-size: 15px;" class="label label-default">{{ player.startTrophies|format_thousands }}</span></h4>
+                    </div>
+                    <div class="deck">
+                      <div class="deck-icons-battles flex-container">
+                          {% for card in player.deck.cards_set.all %}
+                          <div class="cards">
+                            <img src={{ card.icon }} alt="">
+                          </div>
+
+                          {% endfor %}
+                      </div>
+                    </div>
+
+                  </div>
+                  {% endfor %}
+                </div>
+                <div class="opponent" style="padding: 15px;">
+                  {% for player in battle.opponents_set.all %}
+                  <div class="opponent-player">
+                    <div class="team-player-info" style="text-align: right;">
+                      <form method='GET' action="{% url 'player_profile' %}">
+                        <button type="submit" class="table-btn" type="button"><h3 style="text-align: right;">{{ player.player_name }}</h3></button>
+                        <input name='player_tag' type="hidden" class="form-control" value={{ player.player_tag }}>
+                      </form>
+                      <h4 style="color: grey; margin-bottom: 10px;">{{ player.clan_name }}</h4>
+                      <h4 style="margin-bottom: 20px;"><span style="font-size: 15px;" class="label label-default">{{ player.startTrophies|format_thousands }}</span></h4>
+                    </div>
+                    <div class="deck">
+                      <div class="deck-icons-battles flex-container">
+                          {% for card in player.deck.cards_set.all %}
+                          <div class="cards">
+                            <img src={{ card.icon }} alt="">
+                          </div>
+
+                          {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="container-homepage">
+</div>
+
+{% endblock %}

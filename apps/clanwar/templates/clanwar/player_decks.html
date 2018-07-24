@@ -1,0 +1,156 @@
+{% extends 'clanwar/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="home" style="height: 20vh; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(/static/images/clanwar.jpg); background-size: cover; background-position: center center;"></div>
+
+<div class="participations container-homepage" id='participations'>
+  {% for player in player_info %}
+  <form method='GET' action="{% url 'war_participation' %}" style="margin: 30px 0px 30px 0px;">
+    <div class="search-bar col-lg-6" style="padding: 0;">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-default" type="button">Back</button>
+        </span>
+        <input name='clan_tag' type="hidden" class="form-control" value={{ player.clan_tag }}>
+      </div>
+    </div>
+  </form>
+  {% endfor %}
+
+    <div class="panel panel-default" style="margin-top: 20px; width: 100%;">
+      <div class="panel-body container" style=" padding: 0; width: 100%; margin-bottom: 0px; border-bottom: 1px solid #d4d4d5;">
+        <div class="container flex-container player-info-container">
+          <div class="player-info">
+            <h1 style="font-weight: bold;">{{ player.name }}</h1>
+            <p>#{{ player.tag }}</p>
+            <p>{{ player.trophies|format_thousands }} / {{ player.stats.maxTrophies|format_thousands }} MT <img src="/static/images/trophies.png" alt=""> | {{ player.arena.title }} | {{ player.arena.subtitle }}</p>
+            <p style="margin-top: 20px;"><img src="{{ player.clan.badge.image }}" alt="Clan badge" style="max-height: 40px;"> | {{ player.clan.name }} | #{{ player.clan.tag }} | {{ player.role }}</p>
+          </div>
+          <div class="arena-icon">
+            <img src={{ player.arena.icon }} alt="">
+          </div>
+
+
+
+        </div>
+        <div class="player-menu nobr" style="height: 40px; background: #fff; border-bottom: 1px solid #d4d4d5; white-space: nowrap; margin-bottom: 0px;">
+          <table>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_profile' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-home"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button" >Battles</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr active">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button" style="font-weight: bold;">Decks</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button">Cards</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_participation' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-chart-pie"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+              </form>
+            </td>
+          </table>
+
+        </div>
+        <div class="container deck-tab" style="padding-left: 0px; padding-right: 0px; padding-top: 0px; position: relative;">
+          <div class="win-label" style="width: 100px; height: 25px; background: #d01f30; position: absolute; right: -10px; top: -32px; border-radius: 5px 0px 0px 5px;">
+            <h3 style="text-align: left; color: white; padding-left: 10px; line-height: 25px;">{{total_games}} games</h3>
+            <div class="triangle" style=" width: 0; height: 0; border-top: 10px solid #902622; border-right: 10px solid transparent; border-left: 0; position: absolute; right: 0; top: 25px;">
+
+            </div>
+          </div>
+
+          {% for deck in decks_list %}
+          <div class="container" style="border-top: 1px solid lightgrey; padding-left: 15px; padding-right: 15px; position:relative">
+            <div class="deck-card-names">
+              <h3 style="text-align: left; margin: 15px 0px 15px 0px;">
+                {% for card in deck.deck_obj.cards_set.all %}
+                  {{card.name}},
+                {% endfor%}
+              </h3>
+
+            </div>
+            <div class="panel panel-default" style="width: 100%">
+              <div class="panel-body container flex-container" style="width: 100%">
+                <div class="deck-graphics">
+
+                  <div class="deck-icons-battles flex-container">
+                    {% for card in deck.deck_obj.cards_set.all %}
+                      <div class="cards">
+                        <img src={{ card.icon }} alt="">
+                      </div>
+                    {% endfor %}
+                  </div>
+              </div>
+              <div class="deck-analysis" style="padding: 15px;">
+                <table class="table table-condensed" style="width: 100%;">
+                  <tr>
+                    <td style="border-top: 0; text-align: left;">Avg. Elixir</td>
+                    <td style="border-top: 0;">{{deck.deck_obj.cards_set.all|deck_average|lookup:'avg'}}</td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: left;">4-card cycle</td>
+                    <td>{{deck.deck_obj.cards_set.all|deck_average|lookup:'4-avg'}}</td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: left;">{{deck.count|games_percent:total_games|format_percent}}% ({{deck.count}}/{{total_games}} games)</td>
+                    <td></td>
+                  </tr>
+                </table>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width: {{deck.count|games_percent:total_games|format_percent}}%" aria-valuenow="{{deck.count|games_percent:total_games|format_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <table class="table table-condensed" style="width: 100%;">
+                  <thead>
+                    <th></th>
+                    <th>Battles</th>
+                    <th>Wins</th>
+                    <th>Draws</th>
+                    <th>Losses</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: left;">Player</td>
+                      <td>{{deck.count}}</td>
+                      <td>{{deck.deck_obj.id|deck_statistics:player.tag|lookup:'wins'|games_percent:deck.count|format_percent}}%</td>
+                      <td>{{deck.deck_obj.id|deck_statistics:player.tag|lookup:'draws'|games_percent:deck.count|format_percent}}%</td>
+                      <td>{{deck.deck_obj.id|deck_statistics:player.tag|lookup:'losses'|games_percent:deck.count|format_percent}}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width: {{deck.deck_obj.id|deck_statistics:player.tag|lookup:'wins'|games_percent:deck.count|format_percent}}%" aria-valuenow="{{deck.deck_obj.id|deck_statistics:player.tag|lookup:'wins'|games_percent:deck.count|format_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar bg-secondary" role="progressbar" style="width: {{deck.deck_obj.id|deck_statistics:player.tag|lookup:'draws'|games_percent:deck.count|format_percent}}%" aria-valuenow="{{deck.deck_obj.id|deck_statistics:player.tag|lookup:'draws'|games_percent:deck.count|format_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: {{deck.deck_obj.id|deck_statistics:player.tag|lookup:'losses'|games_percent:deck.count|format_percent}}%" aria-valuenow="{{deck.deck_obj.id|deck_statistics:player.tag|lookup:'losses'|games_percent:deck.count|format_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-homepage">
+  {{barbarian_count}}
+</div>
+
+{% endblock %}

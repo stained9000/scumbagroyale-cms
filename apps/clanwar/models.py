@@ -569,9 +569,11 @@ class Players(models.Model):
         #Crear variable para pasar a CurrentSeason.update()
         current_season_data = data['leagueStatistics']['currentSeason']
 
-        #Crear variable para pasar a PreviousSeason.update()
-        previous_season_data = data['leagueStatistics']['previousSeason']
-
+        try:
+            #Crear variable para pasar a PreviousSeason.update()
+            previous_season_data = data['leagueStatistics']['previousSeason']
+        except:
+            previous_season_data = None
         #Crear variable para pasar a Games.update()
         games_data = data['games']
 
@@ -592,10 +594,10 @@ class Players(models.Model):
                 Cards.objects.filter(id=card['id'])[0].decks.add(deck)
                 Cards.objects.filter(id=card['id'])[0].save()
 
-
-        #Update o create Clan
-        clan = Clans()
-        clan.update(data['clan']['tag'])
+        if not data['clan'] == None:
+            #Update o create Clan
+            clan = Clans()
+            clan.update(data['clan']['tag'])
 
         if data['clan'] == None:
             player, created = Players.objects.update_or_create(
@@ -701,13 +703,13 @@ class Battles(models.Model):
     player = models.ForeignKey(Players, on_delete=models.CASCADE)
     utcTime = models.DateTimeField(default=datetime.now)
     type = models.CharField(max_length=30)
-    challengeType = models.CharField(max_length=30)
+    challengeType = models.CharField(max_length=30, null=True, blank=True)
     mode_name = models.CharField(max_length=30)
-    mode_deck = models.CharField(max_length=30)
-    mode_cardLevels = models.CharField(max_length=30)
-    mode_overtimeSeconds = models.IntegerField(default=0)
-    mode_players = models.CharField(max_length=30)
-    mode_sameDeck = models.NullBooleanField()
+    mode_deck = models.CharField(max_length=30, blank=True, null=True)
+    mode_cardLevels = models.CharField(max_length=30, null=True, blank=True)
+    mode_overtimeSeconds = models.IntegerField(default=0, null=True)
+    mode_players = models.CharField(max_length=30, null=True, blank=True)
+    mode_sameDeck = models.NullBooleanField(default=False)
     winCountBefore = models.IntegerField(default=0, null=True)
     deckType = models.CharField(max_length=30)
     teamSize = models.IntegerField(default=0)
@@ -718,107 +720,203 @@ class Battles(models.Model):
     class Meta:
         unique_together=(('player', 'utcTime'),)
 
+    def __str__(self):
+        return self.player.name + self.utcTime
+
     def update(self, player_tag):
         url = "https://api.royaleapi.com/player/" + player_tag + "/battles"
+
+        headers = {
+        'auth': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTE4LCJpZGVuIjoiOTcwMzE5NTA5ODM3NzgzMDQiLCJtZCI6e30sInRzIjoxNTI5MDg3ODkwNjg4fQ.ED32G8YMFSkTAeyw1xzeX1VS4f286Jqye-g-OL9FeAM"
+        }
+
         response = requests.request("GET", url, headers=headers)
         data = response.json()
 
         for battle in data:
-            battle, created = Battles.objects.update_or_create(
-            player = Players.objects.get(tag=player_tag),
-            utcTime = data['utcTime'],
-            defaults={
-            'type' : data['type'],
-            'challengeType' : data['challengeType'],
-            'mode_name' : data['mode']['name'],
-            'mode_deck' : data['mode']['deck'],
-            'mode_cardLevels' : data['mode']['cardLevels'],
-            'mode_overtimeSeconds' : data['mode']['overTimeSeconds'],
-            'mode_players' : data['mode']['players'],
-            'mode_sameDeck' : data['mode']['sameDeck'],
-            'winCountBefore' : data['winCountBefore'],
-            'deckType' : data['deckType'],
-            'teamSize' : data['teamSize'],
-            'winner' : data['winner'],
-            'teamCrowns' : data['teamCrowns'],
-            'opponentCrowns' : data['opponentCrowns'],
-            }
-            )
+            if 'cardLevels' in battle['mode'].keys():
+                battle_obj, created = Battles.objects.update_or_create(
+                player = Players.objects.get(tag=player_tag),
+                utcTime = datetime.utcfromtimestamp(battle['utcTime']).replace(tzinfo=pytz.utc),
+                defaults={
+                'type' : battle['type'],
+                'challengeType' : battle['challengeType'],
+                'mode_name' : battle['mode']['name'],
+                'mode_deck' : battle['mode']['deck'],
+                'mode_cardLevels' : battle['mode']['cardLevels'],
+                'mode_overtimeSeconds' : battle['mode']['overtimeSeconds'],
+                'mode_players' : battle['mode']['players'],
+                'mode_sameDeck' : battle['mode']['sameDeck'],
+                'winCountBefore' : battle['winCountBefore'],
+                'deckType' : battle['deckType'],
+                'teamSize' : battle['teamSize'],
+                'winner' : battle['winner'],
+                'teamCrowns' : battle['teamCrowns'],
+                'opponentCrowns' : battle['opponentCrowns'],
+                }
+                )
+            else:
+                battle_obj, created = Battles.objects.update_or_create(
+                player = Players.objects.get(tag=player_tag),
+                utcTime = datetime.utcfromtimestamp(battle['utcTime']).replace(tzinfo=pytz.utc),
+                defaults={
+                'type' : battle['type'],
+                'challengeType' : battle['challengeType'],
+                'mode_name' : battle['mode']['name'],
+                'winCountBefore' : battle['winCountBefore'],
+                'deckType' : battle['deckType'],
+                'teamSize' : battle['teamSize'],
+                'winner' : battle['winner'],
+                'teamCrowns' : battle['teamCrowns'],
+                'opponentCrowns' : battle['opponentCrowns'],
+                }
+                )
+            team = Teams()
+            team.update(battle_obj, battle['team'])
+
+            opponent = Opponents()
+            opponent.update(battle_obj, battle['opponent'])
 
 #update
 class Teams(models.Model):
     battle = models.ForeignKey(Battles, on_delete=models.CASCADE)
-    player = models.ForeignKey(Players, on_delete=models.CASCADE)
+    player_name = models.CharField(max_length=200)
+    player_tag = models.CharField(max_length=200)
+    startTrophies = models.IntegerField(default=0, null=True, blank=True)
     crownsEarned = models.IntegerField(default=0)
+    clan_name = models.CharField(max_length=200, blank=True, null=True)
+    clan_tag = models.CharField(max_length=200, blank=True, null=True)
     deck = models.ForeignKey(Decks)
 
     class Meta:
-        unique_together=(('battle', 'player'),)
+        unique_together=(('battle', 'player_tag'),)
+
+    def __str__(self):
+        return self.player_name
 
     def update(self, battle_obj, team_list):
 
-        for player in team_list:
-            team, created = Teams.objects.update_or_create(
-            battle = battle_obj,
-            player = Players.objects.get(tag=player_tag),
-            defaults={
-            'crownsEarned' : player['crownsEarned'],
-            }
-            )
+        for team_player in team_list:
 
             #Verificar si deck existe o crear
             cards_list = list()
 
-            for card in player['deck']:
+            for card in team_player['deck']:
                 cards_list.append(card['id'])
 
-            cards_list = "-".join(cards_list.sort())
+            cards_list = "-".join(str(id) for id in sorted(cards_list))
 
-            deck, created = Decks.objects.get_or_create(
+            player_deck, created = Decks.objects.get_or_create(
             id = cards_list,
             )
 
-            team.deck.add(deck)
+            if created:
+                for card in team_player['deck']:
+                    Cards.objects.get(id=card['id']).decks.add(player_deck)
+                    Cards.objects.get(id=card['id']).save()
+
+            try:
+                x = team_player['startTrophies']
+            except:
+                team_player['startTrophies'] = None
+
+            if team_player['clan'] == None:
+                team, created = Teams.objects.update_or_create(
+                battle = battle_obj,
+                deck = player_deck,
+                defaults={
+                'player_name' : team_player['name'],
+                'player_tag' : team_player['tag'],
+                'startTrophies' : team_player['startTrophies'],
+                'crownsEarned' : team_player['crownsEarned'],
+                }
+                )
+            else:
+                team, created = Teams.objects.update_or_create(
+                battle = battle_obj,
+                deck = player_deck,
+                defaults={
+                'player_name' : team_player['name'],
+                'player_tag' : team_player['tag'],
+                'startTrophies' : team_player['startTrophies'],
+                'clan_name' : team_player['clan']['name'],
+                'clan_tag' : team_player['clan']['tag'],
+                'crownsEarned' : team_player['crownsEarned'],
+                }
+                )
 
 #update
 class Opponents(models.Model):
     battle = models.ForeignKey(Battles, on_delete=models.CASCADE)
-    player = models.ForeignKey(Players, on_delete=models.CASCADE)
+    player_name = models.CharField(max_length=200)
+    player_tag = models.CharField(max_length=200)
+    startTrophies = models.IntegerField(default=0, null=True, blank=True)
     crownsEarned = models.IntegerField(default=0)
+    clan_name = models.CharField(max_length=200, blank=True, null=True)
+    clan_tag = models.CharField(max_length=200, blank=True, null=True)
     deck = models.ForeignKey(Decks)
 
     class Meta:
-        unique_together=(('battle', 'player'),)
+        unique_together=(('battle', 'player_tag'),)
+
+    def __str__(self):
+        return self.player_name
 
     def update(self, battle_obj, team_list):
-
-        for player in team_list:
-            team, created = Opponents.objects.update_or_create(
-            battle = battle_obj,
-            player = Players.objects.get(tag=player_tag),
-            defaults={
-            'crownsEarned' : player['crownsEarned'],
-            }
-            )
-
+        for opponent_player in team_list:
             #Verificar si deck existe o crear
             cards_list = list()
 
-            for card in player['deck']:
+            for card in opponent_player['deck']:
                 cards_list.append(card['id'])
 
-            cards_list = "-".join(cards_list.sort())
+            cards_list = "-".join(str(id) for id in sorted(cards_list))
 
-            deck, created = Decks.objects.get_or_create(
+            player_deck, created = Decks.objects.get_or_create(
             id = cards_list,
             )
 
-            team.deck.add(deck)
+            if created:
+                for card in opponent_player['deck']:
+                    Cards.objects.get(id=card['id']).decks.add(player_deck)
+                    Cards.objects.get(id=card['id']).save()
+
+            try:
+                x = opponent_player['startTrophies']
+            except:
+                opponent_player['startTrophies'] = None
+
+            if opponent_player['clan'] == None:
+                opponent, created = Opponents.objects.update_or_create(
+                battle = battle_obj,
+                deck = player_deck,
+                defaults={
+                'player_name' : opponent_player['name'],
+                'player_tag' : opponent_player['tag'],
+                'startTrophies' : opponent_player['startTrophies'],
+                'crownsEarned' : opponent_player['crownsEarned'],
+                }
+                )
+
+            else:
+
+                opponent, created = Opponents.objects.update_or_create(
+                battle = battle_obj,
+                deck = player_deck,
+                defaults={
+                'player_name' : opponent_player['name'],
+                'player_tag' : opponent_player['tag'],
+                'startTrophies' : opponent_player['startTrophies'],
+                'clan_name' : opponent_player['clan']['name'],
+                'clan_tag' : opponent_player['clan']['tag'],
+                'crownsEarned' : opponent_player['crownsEarned'],
+                }
+                )
 
 #update
 class CurrentSeason(models.Model):
     player = models.OneToOneField(Players, primary_key=True, on_delete=models.CASCADE)
-    rank = models.IntegerField(default=0)
+    rank = models.IntegerField(default=0, null=True, blank=True)
     trophies = models.IntegerField(default=0)
     bestTrophies = models.IntegerField(default=0)
 
@@ -826,22 +924,31 @@ class CurrentSeason(models.Model):
         return 'CurrentSeason'
 
     def update(self, player_tag, current_season_data):
-        season, created = CurrentSeason.objects.update_or_create(
-        player = Players.objects.get(tag=player_tag),
-        defaults={
-        'rank' : current_season_data['rank'],
-        'trophies' : current_season_data['trophies'],
-        'bestTrophies' : current_season_data['bestTrophies'],
-        }
-        )
+        if 'rank' in current_season_data.keys():
+            season, created = CurrentSeason.objects.update_or_create(
+            player = Players.objects.get(tag=player_tag),
+            defaults={
+            'rank' : current_season_data['rank'],
+            'trophies' : current_season_data['trophies'],
+            'bestTrophies' : current_season_data['bestTrophies'],
+            }
+            )
+        else:
+            season, created = CurrentSeason.objects.update_or_create(
+            player = Players.objects.get(tag=player_tag),
+            defaults={
+            'trophies' : current_season_data['trophies'],
+            'bestTrophies' : current_season_data['bestTrophies'],
+            }
+            )
 
 #update
 class PreviousSeasons(models.Model):
     season = models.CharField(max_length=30)
     player = models.ForeignKey(Players, on_delete=models.CASCADE)
-    rank = models.IntegerField(default=0, null=True)
+    rank = models.IntegerField(default=0, null=True, blank=True)
     trophies = models.IntegerField(default=0)
-    bestTrophies = models.IntegerField(default=0)
+    bestTrophies = models.IntegerField(default=0, blank=True, null=True)
     arena = models.ForeignKey(Arenas, on_delete=models.CASCADE, null=True)
 
     class Meta:
@@ -851,7 +958,9 @@ class PreviousSeasons(models.Model):
         return self.player.tag + ": " + self.season
 
     def update(self, player_tag, previous_season_data):
-        if 'rank' in previous_season_data.keys():
+        if previous_season_data == None:
+            return None
+        elif 'rank' in previous_season_data.keys():
             season, created = PreviousSeasons.objects.update_or_create(
             season = previous_season_data['id'],
             player = Players.objects.get(tag=player_tag),

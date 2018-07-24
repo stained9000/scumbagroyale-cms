@@ -6,4 +6,7 @@ def format_thousands(value):
     if value == None:
         return None
     else:
-        return "{:,}".format(value)
+        try:
+            return "{:,}".format(value)
+        except:
+            return None

@@ -149,3 +149,36 @@ def player_profile(request):
 
     player = Players.objects.filter(tag=player_tag)[0]
     return render(request, 'clanwar/player_profile.html', {'player': player, 'previousSeason': previousSeason})
+
+def player_battles(request):
+    player_tag = request.GET['player_tag']
+    player = Players()
+    stats_data, current_season_data, previous_season_data , games_data = player.update(player_tag)
+    battles = Battles()
+    battles.update(player_tag)
+
+
+    player = Players.objects.filter(tag=player_tag)[0]
+    battles = Battles.objects.filter(player=player)
+    return render(request, 'clanwar/player_battles.html', {'player': player, 'battles': battles})
+
+def player_decks(request):
+    player_tag = request.GET['player_tag']
+    player = Players()
+    stats_data, current_season_data, previous_season_data , games_data = player.update(player_tag)
+    battles = Battles()
+    battles.update(player_tag)
+
+
+    player = Players.objects.filter(tag=player_tag)[0]
+    battles = Battles.objects.filter(player=player)
+    decks = Teams.objects.filter(player_tag=player_tag).values('deck__id').annotate(id_count = Count('deck__id')).order_by('-id_count')
+    decks_list = list()
+    total_games = 0
+    for deck in decks:
+        decks_list.append({'deck_obj': Decks.objects.get(id=deck['deck__id']), 'count': deck['id_count']})
+        total_games += deck['id_count']
+
+    barbarian_count = Teams.objects.filter(player_tag=player_tag).filter(deck__id__contains='26000008').count()
+
+    return render(request, 'clanwar/player_decks.html', {'player': player, 'battles': battles, 'decks_list': decks_list, 'total_games': total_games, 'barbarian_count': barbarian_count})

@@ -25,7 +25,7 @@
             <h1 style="font-weight: bold;">{{ player.name }}</h1>
             <p>#{{ player.tag }}</p>
             <p>{{ player.trophies|format_thousands }} / {{ player.stats.maxTrophies|format_thousands }} MT <img src="/static/images/trophies.png" alt=""> | {{ player.arena.title }} | {{ player.arena.subtitle }}</p>
-            <p style="margin-top: 20px;"><img src="{{ player.clan.badge.image }}" alt="Clan badge" style="max-height: 40px;"> | {{ player.clan.name }} | {{ player.clan.tag }} | {{ player.role }}</p>
+            <p style="margin-top: 20px;"><img src="{{ player.clan.badge.image }}" alt="Clan badge" style="max-height: 40px;"> | {{ player.clan.name }} | #{{ player.clan.tag }} | {{ player.role }}</p>
           </div>
           <div class="arena-icon">
             <img src={{ player.arena.icon }} alt="">
@@ -36,22 +36,22 @@
         </div>
         <div class="player-menu nobr" style="height: 40px; background: #fff; border-bottom: 1px solid #d4d4d5; white-space: nowrap;">
           <table>
-            <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+            <td class="nobr active">
+              <form method='GET' action="{% url 'player_profile' %}">
                 <button type="submit" class="table-btn" type="button"><i class="fa fa-home"></i></button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_battles' %}">
                 <button type="submit" class="table-btn" type="button">Battles</button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_decks' %}">
                 <button type="submit" class="table-btn" type="button">Decks</button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr">
@@ -84,7 +84,7 @@
             <table class="table table-condensed" style="width: 100%">
               <tbody>
                 <tr>
-                  <td style="max-width: 29px;"><img src={{ player.arena.icon }} alt="" style="max-height: 28px;"></td>
+                  <td style="max-width: 29px;"><img src={{ player.arena.icon }} alt="" style="max-height: 44px;"></td>
                   <td style="text-align: right;">{{ player.arena.title }}</br>{{ player.arena.subtitle }}</td>
                 </tr>
                 <tr>
@@ -105,7 +105,7 @@
             <table class="table table-condensed" style="width: 100%">
               <tbody>
                 <tr>
-                  <td style="max-width: 29px;"><img src={{ previousSeason.arena.icon }} alt="" style="max-height: 28px;"></td>
+                  <td style="max-width: 29px;"><img src="{{ previousSeason.arena.icon }}" alt="None" style="max-height: 44px;"></td>
                   <td style="text-align: right;">{{ previousSeason.arena.title }}</br>{{ previousSeason.arena.subtitle }}</td>
                 </tr>
                 <tr>
