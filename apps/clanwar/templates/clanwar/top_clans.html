@@ -10,51 +10,64 @@
 {% load format_thousands %}
 
 {% block content %}
-<div class="home" style="height: 40vh; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(/static/images/topclans.jpg); background-size: cover; background-position: center center;"></div><div class="page_content">
+<div class="home" style="height: 40vh; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(/static/images/topclans.jpg); background-size: cover; background-position: center center;">
+  <div class="region-text" style="position: absolute; bottom: 0; left:0; padding: 20px; max-width: 60%;">
+    <h3 style="font-size: calc(1rem + 2vw);">Top Clans {{ country_name }}</h3>
+  </div>
+  <div class="country-flag" style="position: absolute; bottom: 0; right: 0; padding: 20px;">
+    <img src="/static/images/flags/{{ country_code }}.svg" style="max-width: 76px; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);"/>
+  </div>
+</div>
+<div class="" style="width: 100%; background: #1b1c1d; color: rgba(255,255,255,.9); height: 30px; font-family: 'Ubuntu'; font-weight: 800;">
+  <form style="line-height: 30px;" class="" method='GET' action="{% url 'top_clans' %}">
+    <select class="table-btn" name="country">
+      {% include "countries.html" %}
+    </select>
+    <input class="table-btn" type="submit" value="Submit">
+  </form>
+</div>
+
 <div class="page_content" style="margin-top: 30px;">
 <div class="container container-homepage">
   <div class="panel panel-default" style="width: 100%;">
-    <div class="container panel-body" style="width: 100%;">
-      <h3>Top Clans Worldwide</h3>
-    </div>
-
-      <table class="table table-striped table-hover text-center table-condesed" style="width: 100%; padding:0; margin:0; border-top: 1px solid lightgrey;">
+    <div class="container panel-body" style="width: 100%; padding: 0;">
+      <table class="table table-striped table-hover text-center table-condesed" style="width: 100%; padding:0; margin:0;">
         <thead class="text-center small">
-          <th class="text-center">Rank</th>
-          <th class="text-center">Badge</th>
-          <th class="text-center">Name</th>
-          <th class="text-center" colspan="2">Region</th>
-          <th class="text-center" colspan="2">Delta</th>
-          <th class="text-center" style="padding: 8px 4px 8px 8px;">Trophies</th>
+          <th class="text-center top-clans-rank">Rank</th>
+          <th class="text-center top-clans-badge">Badge</th>
+          <th class="text-center top-clans-name">Name</th>
+          <th class="text-center top-clans-region" colspan="2">Region</th>
+          <th class="text-center top-clans-delta" colspan="2">Delta</th>
+          <th class="text-center top-clans-trophies" style="padding: 8px 4px 8px 8px;">Trophies</th>
         </thead>
 
         <tbody class="small">
           <div class="pre-scrollable" style="max-height: 500px">
           {% for clan in data %}
           <tr>
-            <td style="vertical-align: middle;">{{ clan|lookup:'rank' }}</td>
-            <td style="vertical-align: middle;"><img src="{{ clan|lookup:'badge'|lookup:'image' }}" style="max-height: 50px;"/></td>
-            <td style="vertical-align: middle;">{{ clan|lookup:'name' }}</br>{{ clan|lookup:'tag' }}</td>
-            <td style="vertical-align: middle;"><img src="/static/images/flags/{{ clan|lookup:'location'|lookup:'code' }}.svg" style="max-width: 33px; box-shadow: 2px 2px 5px #888888;"/></td>
-            <td style="vertical-align: middle;">{{ clan|lookup:'location'|lookup:'name' }}</td>
+            <td class="top-clans-rank" style="vertical-align: middle;">{{ clan|lookup:'rank' }}</td>
+            <td class="top-clans-badge" style="vertical-align: middle;"><img src="{{ clan|lookup:'badge'|lookup:'image' }}" style="max-height: 50px;"/></td>
+            <td class="top-clans-name" style="vertical-align: middle;">{{ clan|lookup:'name' }}</br>{{ clan|lookup:'tag' }}</td>
+            <td class="top-clans-region" style="vertical-align: middle;"><img src="/static/images/flags/{{ clan|lookup:'location'|lookup:'code' }}.svg" style="max-width: 33px; box-shadow: 2px 2px 5px #888888;"/></td>
+            <td class="top-clans-region" style="vertical-align: middle;">{{ clan|lookup:'location'|lookup:'name' }}</td>
             {% if clan|subtract:'rank,previousRank' < 0 %}
-            <td style="vertical-align: middle;"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true" style="color: green;"></span></td>
-            <td style="vertical-align: middle;">{{ clan|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
+            <td class="top-clans-delta" style="vertical-align: middle;"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true" style="color: green;"></span></td>
+            <td class="top-clans-delta" style="vertical-align: middle;">{{ clan|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
             {% elif clan|subtract:'rank,previousRank' > 0 %}
-            <td style="vertical-align: middle;"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" style="color: red;"></span></td>
-            <td style="vertical-align: middle;">{{ clan|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
+            <td class="top-clans-delta" style="vertical-align: middle;"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" style="color: red;"></span></td>
+            <td class="top-clans-delta" style="vertical-align: middle;">{{ clan|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
             {% else %}
-            <td style="vertical-align: middle;"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
-            <td style="vertical-align: middle;"></span> {{ clan|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
+            <td class="top-clans-delta" style="vertical-align: middle;"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></td>
+            <td class="top-clans-delta" style="vertical-align: middle;"></span> {{ clan|subtract:'rank,previousRank'|absolute|format_thousands }}</td>
             {% endif %}
-            <td style="vertical-align: middle;">{{ clan|lookup:'score'|format_thousands }}</td>
+            <td class="top-clans-trophies" style="vertical-align: middle;">{{ clan|lookup:'score'|format_thousands }}</td>
           </tr>
           {% endfor %}
           </div>
         </tbody>
 
       </table>
-
+      </div>
   </div>
 </div>
 </div>

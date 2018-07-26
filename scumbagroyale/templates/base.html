@@ -16,6 +16,7 @@
 {% load deck_average %}
 {% load games_percent %}
 {% load deck_statistics %}
+{% load deck_statistics_popular %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -147,6 +148,11 @@
 
               .cards {width: calc(100%/4); order: 1}
               .cards img {max-width: 100%;}
+
+              .column3 { display: table-cell; }
+              .top-players-badge { display: table-cell; }
+              .top-players-lvl { display: table-cell; }
+              .top-clans-region, .top-clans-rank { display: table-cell; }
             }
 
             @media screen and (min-width: 536px) and (max-width: 992px) {
@@ -195,7 +201,10 @@
 
               .clan-wars-query { width: 100%; height: 300px;}
 
-
+              .column3 { display: table-cell; }
+              .top-players-badge { display: table-cell; }
+              .top-players-lvl { display: table-cell; }
+              .top-clans-region, .top-clans-rank { display: table-cell; }
             }
 
             @media screen and (max-width: 535px) {
@@ -246,6 +255,10 @@
               .deck-graphics {width: 50%; order: 1;}
               .deck-analysis {width: 50%; order: 2;}
 
+              .column3 { display: none; }
+              .top-players-badge { display: none; }
+              .top-players-lvl { display: none; }
+              .top-clans-region, .top-clans-rank { display: none; }
             }
         </style>
         <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">

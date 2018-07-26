@@ -1,0 +1,114 @@
+{% extends 'clanwar/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="home" style="height: 20vh; background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(/static/images/clanwar.jpg); background-size: cover; background-position: center center;"></div>
+
+<div class="participations container-homepage" id='participations'>
+    <div class="panel panel-default" style="margin-top: 20px; width: 100%;">
+      <div class="panel-body container" style=" padding: 0; width: 100%; margin-bottom: 0px; border-bottom: 1px solid #d4d4d5;">
+        <div class="container flex-container player-info-container">
+          <div class="player-info">
+            <h1 style="font-weight: bold;">{{ player.name }}</h1>
+            <p>#{{ player.tag }}</p>
+            <p>{{ player.trophies|format_thousands }} / {{ player.stats.maxTrophies|format_thousands }} MT <img src="/static/images/trophies.png" alt=""> | {{ player.arena.title }} | {{ player.arena.subtitle }}</p>
+            <p style="margin-top: 20px;"><img src="{{ player.clan.badge.image }}" alt="Clan badge" style="max-height: 40px;"> | {{ player.clan.name }} | #{{ player.clan.tag }} | {{ player.role }}</p>
+          </div>
+          <div class="arena-icon">
+            <img src={{ player.arena.icon }} alt="">
+          </div>
+
+
+
+        </div>
+        <div class="player-menu nobr" style="height: 40px; background: #fff; border-bottom: 1px solid #d4d4d5; white-space: nowrap; margin-bottom: 0px;">
+          <table>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_profile' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-home"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_battles' %}">
+                <button type="submit" class="table-btn" type="button">Battles</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_decks' %}">
+                <button type="submit" class="table-btn" type="button">Decks</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr">
+              <form method='GET' action="{% url 'player_decks' %}">
+                <button type="submit" class="table-btn" type="button">Cards</button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+            <td class="nobr active">
+              <form method='GET' action="{% url 'player_analytics' %}">
+                <button type="submit" class="table-btn" type="button"><i class="fa fa-chart-pie"></i></button>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
+              </form>
+            </td>
+          </table>
+
+        </div>
+        <div class="container" style="padding-left: 0px; padding-right: 0px; padding-top: 0px; position: relative;">
+
+
+
+          <div class="container" style="border-top: 1px solid lightgrey; padding-left: 15px; padding-right: 15px; position:relative">
+            <table class="table table-condensed" style="width: 100%;">
+              <thead>
+                <th class="column1" style="text-align: center;">Card</th>
+                <th class="column2" style="text-align: center;">Name</th>
+                <th class="column3" style="text-align: center;">Usage</th>
+                <th class="column4" style="text-align: center;">Usage %</th>
+                <th class="column5" style="text-align: center;">Win %</th>
+              </thead>
+              <tbody>
+                {% for card in count_list %}
+                  {% if card|lookup:'card_count' = 0 %}
+                  {% else %}
+                    {% for card_obj in card|lookup:'card_obj' %}
+
+                      <tr>
+                        <td class="column1" style="text-align: center;"><img src={{card_obj.icon}} alt="" style="max-width: 47px;"></td>
+                        <td class="column2" style="text-align: center; vertical-align: middle;">{{card_obj.name}}</td>
+                        <td class="column3" style="text-align: center; vertical-align: middle;">{{card|lookup:'card_count'}}/{{total_games}}</td>
+                        <td class="column4"style="vertical-align: middle;">
+                          {{card|lookup:'card_count'|games_percent:total_games|format_percent}}%
+                          </br>
+                          <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{card|lookup:'card_count'|games_percent:total_games|format_percent}}%" aria-valuenow="{{card|lookup:'card_count'|games_percent:total_games|format_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                        <td class="column5" style="vertical-align: middle;">
+                          {{card|lookup:'wins_count'|games_percent:card|format_percent}}%
+                          </br>
+                          <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{card|lookup:'wins_count'|games_percent:card|format_percent}}%" aria-valuenow="{{card|lookup:'wins_count'|games_percent:card|format_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </td>
+                      </tr>
+
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-homepage">
+  {{barbarian_count}}
+</div>
+
+{% endblock %}

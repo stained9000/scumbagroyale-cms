@@ -55,15 +55,15 @@
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_decks' %}">
                 <button type="submit" class="table-btn" type="button">Cards</button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_analytics' %}">
                 <button type="submit" class="table-btn" type="button"><i class="fa fa-chart-pie"></i></button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
           </table>
@@ -94,7 +94,10 @@
             <div class="panel panel-default" style="border-color: {{ battle.winner|format_winlosedraw|lookup:'color1'}};">
 
               <div class="panel-body container flex-container" style="padding: 0px;">
-                <div class="team" style="padding: 15px;">
+                <div class="team" style="padding: 15px; position: relative;">
+                  <div class="battle-image" style="position: absolute; top: 22px; right: -22px;">
+                    <img src="https://royaleapi.com/static/img/ui/battle.png" alt="" style="max-width: 44px;">
+                  </div>
                   {% for player in battle.teams_set.all %}
                   <div class="team-player" style="margin-bottom: 5px;">
                     <div class="team-player-info" style="text-align: left;">

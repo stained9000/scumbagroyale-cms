@@ -43,27 +43,27 @@
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_battles' %}">
                 <button type="submit" class="table-btn" type="button" >Battles</button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr active">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_decks' %}">
                 <button type="submit" class="table-btn" type="button" style="font-weight: bold;">Decks</button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_decks' %}">
                 <button type="submit" class="table-btn" type="button">Cards</button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_analytics' %}">
                 <button type="submit" class="table-btn" type="button"><i class="fa fa-chart-pie"></i></button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
           </table>

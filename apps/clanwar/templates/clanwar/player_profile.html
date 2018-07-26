@@ -55,15 +55,15 @@
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_decks' %}">
                 <button type="submit" class="table-btn" type="button">Cards</button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
             <td class="nobr">
-              <form method='GET' action="{% url 'player_participation' %}">
+              <form method='GET' action="{% url 'player_analytics' %}">
                 <button type="submit" class="table-btn" type="button"><i class="fa fa-chart-pie"></i></button>
-                <input name='player_tag' type="hidden" class="form-control" value={{ participant|lookup:'tag' }}>
+                <input name='player_tag' type="hidden" class="form-control" value={{ player.tag }}>
               </form>
             </td>
           </table>
@@ -79,6 +79,7 @@
             </div>
           </div>
           <div class='league-stats' style="margin-bottom: 20px;">
+            <img src="https://royaleapi.com/static/img/ui/rank.png" alt="" style="max-width: 35px; float: right;">
             <h2 style="margin-bottom:20px; font-weight:bold;">League Stats</h2>
             <h3 style="font-weight:bold;">Current Season</h3>
             <table class="table table-condensed" style="width: 100%">
@@ -89,15 +90,15 @@
                 </tr>
                 <tr>
                   <td>Rank</td>
-                  <td style="text-align: right;">{{ player.currentseason.rank }}</td>
+                  <td style="text-align: right;">{{ player.currentseason.rank }} <img src="https://royaleapi.com/static/img/ui/rank.png" alt="" style="max-width: 20px;"></td>
                 </tr>
                 <tr>
                   <td>Trophies</td>
-                  <td style="text-align: right;">{{ player.currentseason.trophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.currentseason.trophies|format_thousands }} <img src="https://royaleapi.com/static/img/ui/trophy.png" alt="" style="max-width: 20px;"></td>
                 </tr>
                 <tr>
                   <td>Best trophies</td>
-                  <td style="text-align: right;">{{ player.currentseason.bestTrophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ player.currentseason.bestTrophies|format_thousands }} <img src="https://royaleapi.com/static/img/ui/trophy.png" alt="" style="max-width: 20px;"></td>
                 </tr>
               </tbody>
             </table>
@@ -110,20 +111,21 @@
                 </tr>
                 <tr>
                   <td>Rank</td>
-                  <td style="text-align: right;">{{ previousSeason.rank|format_thousands }}</td>
+                  <td style="text-align: right;">{{ previousSeason.rank|format_thousands }} <img src="https://royaleapi.com/static/img/ui/rank.png" alt="" style="max-width: 20px;"></td>
                 </tr>
                 <tr>
                   <td>Trophies</td>
-                  <td style="text-align: right;">{{ previousSeason.trophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ previousSeason.trophies|format_thousands }} <img src="https://royaleapi.com/static/img/ui/trophy.png" alt="" style="max-width: 20px;"></td>
                 </tr>
                 <tr>
                   <td>Best trophies</td>
-                  <td style="text-align: right;">{{ previousSeason.bestTrophies|format_thousands }}</td>
+                  <td style="text-align: right;">{{ previousSeason.bestTrophies|format_thousands }} <img src="https://royaleapi.com/static/img/ui/trophy.png" alt="" style="max-width: 20px;"></td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class='battle-stats' style="margin-bottom: 20px;">
+            <img src="https://royaleapi.com/static/img/ui/battle.png" alt="" style="max-width: 35px; float: right;">
             <h2 style="margin-bottom:20px; font-weight:bold;">Battle Stats</h2>
             <h3 style="font-weight:bold;">Clan War</h3>
             <table class="table table-condensed" style="width: 100%">
@@ -174,6 +176,7 @@
             </table>
           </div>
           <div class='challenge-stats'>
+            <img src="https://royaleapi.com/static/img/ui/tournament.png" alt="" style="max-width: 35px; float: right;">
             <h2 style="margin-bottom:20px; font-weight:bold;">Challenge Stats</h2>
             <h3>Challenges</h3>
             <table class="table table-condensed" style="width: 100%;">
@@ -199,6 +202,7 @@
             </table>
           </div>
           <div class='misc-stats'>
+            <img src="https://royaleapi.com/static/img/ui/cards.png" alt="" style="max-width: 35px; float: right;">
             <h2 style="margin-bottom:20px; font-weight:bold;">Misc Stats</h2>
             </br>
             <table class="table table-condensed" style="width: 100%;">

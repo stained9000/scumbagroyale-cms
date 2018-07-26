@@ -57,7 +57,16 @@ def current_war(tag):
     return data
 
 def top_clans(request):
-    url = 'http://api.royaleapi.com/top/clans'
+    try:
+        url = 'http://api.royaleapi.com/top/clans/' + request.GET['country'][:2].lower()
+        country_code = request.GET['country'][:2].upper()
+        country_name = "in " + request.GET['country'][2:]
+
+
+    except:
+        url = 'http://api.royaleapi.com/top/clans/'
+        country_code = "_INT"
+        country_name = "Global"
 
     headers = {
     'auth': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTE4LCJpZGVuIjoiOTcwMzE5NTA5ODM3NzgzMDQiLCJtZCI6e30sInRzIjoxNTI5MDg3ODkwNjg4fQ.ED32G8YMFSkTAeyw1xzeX1VS4f286Jqye-g-OL9FeAM"
@@ -66,7 +75,7 @@ def top_clans(request):
     response = requests.request("GET", url, headers=headers)
     data = response.json()
 
-    return render(request, 'clanwar/top_clans.html', {'data': data,})
+    return render(request, 'clanwar/top_clans.html', {'data': data, 'country_code': country_code, 'country_name': country_name,})
 
 def top_players(request):
     try:
@@ -108,7 +117,15 @@ def popular_decks(request):
     response = requests.request("GET", url, headers=headers)
     data = response.json()
 
-    return render(request, 'clanwar/popular_decks.html', {'data': data,})
+    decks = Teams.objects.all().values('deck__id').annotate(id_count = Count('deck__id')).order_by('-id_count')
+    decks_list = list()
+    total_games = 0
+    for deck in decks:
+        decks_list.append({'deck_obj': Decks.objects.get(id=deck['deck__id']), 'count': deck['id_count']})
+        total_games += deck['id_count']
+    deck_count = len(decks_list[0:10])
+
+    return render(request, 'clanwar/popular_decks.html', {'data': data, 'decks_list': decks_list[0:10], 'total_games': total_games, 'deck_count': deck_count})
 
 def update_constants_cards(request):
     cards = Cards()
@@ -182,3 +199,27 @@ def player_decks(request):
     barbarian_count = Teams.objects.filter(player_tag=player_tag).filter(deck__id__contains='26000008').count()
 
     return render(request, 'clanwar/player_decks.html', {'player': player, 'battles': battles, 'decks_list': decks_list, 'total_games': total_games, 'barbarian_count': barbarian_count})
+
+def player_analytics(request):
+    player_tag = request.GET['player_tag']
+    player = Players()
+    stats_data, current_season_data, previous_season_data , games_data = player.update(player_tag)
+    battles = Battles()
+    battles.update(player_tag)
+
+
+    player = Players.objects.filter(tag=player_tag)[0]
+    battles = Battles.objects.filter(player=player)
+
+    total_games = battles.count()
+
+    count_list = list()
+
+    for card in Cards.objects.all():
+        card_count = Teams.objects.filter(player_tag=player_tag).filter(deck__id__contains=str(card.id)).count()
+        card_obj = card
+        wins_count = Teams.objects.filter(player_tag=player_tag).filter(deck__id__contains=str(card.id), battle__winner__gt=0).count()
+
+        count_list.append({'card_obj': [card_obj,], 'card_count': card_count, 'wins_count': wins_count})
+
+    return render(request, 'clanwar/player_analytics.html', {'player': player, 'battles': battles, 'total_games': total_games, 'count_list': count_list})
