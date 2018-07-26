@@ -143,6 +143,11 @@ option {
   max-height: 100%;
   max-width: 100%;
 }
+.clan-icon img {
+  float: right;
+  max-height: 100%;
+  max-width: 100%;
+}
 .deck-info {
   margin-bottom: 20px;
 }

@@ -47,7 +47,12 @@
           <tr>
             <td class="top-clans-rank" style="vertical-align: middle;">{{ clan|lookup:'rank' }}</td>
             <td class="top-clans-badge" style="vertical-align: middle;"><img src="{{ clan|lookup:'badge'|lookup:'image' }}" style="max-height: 50px;"/></td>
-            <td class="top-clans-name" style="vertical-align: middle;">{{ clan|lookup:'name' }}</br>{{ clan|lookup:'tag' }}</td>
+            <td class="top-clans-name" style="vertical-align: middle;">
+              <form method='GET' action="{% url 'clan_profile' %}">
+                <button type="submit" class="table-btn" type="button">{{ clan|lookup:'name' }}</br>{{ clan|lookup:'tag' }}</i></button>
+                <input name='clan_tag' type="hidden" class="form-control" value={{ clan|lookup:'tag' }}>
+              </form>              
+            </td>
             <td class="top-clans-region" style="vertical-align: middle;"><img src="/static/images/flags/{{ clan|lookup:'location'|lookup:'code' }}.svg" style="max-width: 33px; box-shadow: 2px 2px 5px #888888;"/></td>
             <td class="top-clans-region" style="vertical-align: middle;">{{ clan|lookup:'location'|lookup:'name' }}</td>
             {% if clan|subtract:'rank,previousRank' < 0 %}

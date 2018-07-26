@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^player_battles$', views.player_battles, name='player_battles'),
     url(r'^player_decks$', views.player_decks, name='player_decks'),
     url(r'^player_analytics$', views.player_analytics, name='player_analytics'),
+    url(r'^clan_profile$', views.clan_profile, name='clan_profile'),
     url(r'^update_constants_cards$', views.update_constants_cards, name='update_constants_cards'),
     url(r'^update_constants_badges$', views.update_constants_badges, name='update_constants_badges'),
     url(r'^update_constants_locations$', views.update_constants_locations, name='update_constants_locations'),

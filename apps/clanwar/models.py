@@ -536,6 +536,8 @@ class Clans(models.Model):
         }
         )
 
+        return clan, data['members']
+
 #update
 class Players(models.Model):
     tag = models.CharField(max_length=20, primary_key=True)

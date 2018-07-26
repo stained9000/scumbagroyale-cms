@@ -223,3 +223,10 @@ def player_analytics(request):
         count_list.append({'card_obj': [card_obj,], 'card_count': card_count, 'wins_count': wins_count})
 
     return render(request, 'clanwar/player_analytics.html', {'player': player, 'battles': battles, 'total_games': total_games, 'count_list': count_list})
+
+def clan_profile(request):
+    clan_tag = request.GET['clan_tag']
+    clan = Clans()
+    clan, members = clan.update(clan_tag)
+
+    return render(request, 'clanwar/clan_profile.html', {'clan': clan, 'members': members})
